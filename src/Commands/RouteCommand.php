@@ -38,7 +38,7 @@ class RouteCommand extends RouteListCommand
         $writer = $writer->open($this->option('dir').DIRECTORY_SEPARATOR.$this->option('filename'));
 
         foreach ($routes as $route) {
-            $url = ($route['host'] ?: config('app.url').'/').$route['uri'];
+            $url = $route['method'].':'.($route['host'] ?: config('app.url').'/').$route['uri'];
 
             if ($writer->hasContent($url)) {
                 continue;
@@ -46,7 +46,6 @@ class RouteCommand extends RouteListCommand
 
             $writer->write($markdown->h2('待补充'))
                 ->write($markdown->text($url))
-                ->write($markdown->text('method:'.$route['method']))
                 ->write($markdown->text('中间件：'.$route['middleware']))
                 ->write($markdown->tableHeader([
                     '参数', '类型', '默认值', '备注',
@@ -96,7 +95,7 @@ class RouteCommand extends RouteListCommand
                 $writer->write($markdown->h2(ucfirst(substr($path, strrpos($path, '/') + 1))));
             }
 
-            $url = ($route['host'] ?: config('app.url').'/').$route['uri'];
+            $url = $route['method'].':'.($route['host'] ?: config('app.url').'/').$route['uri'];
 
             if ($writer->hasContent($url)) {
                 continue;
@@ -108,7 +107,6 @@ class RouteCommand extends RouteListCommand
 
             $writer->write($markdown->h3('待补充'))
                 ->write($markdown->text($url))
-                ->write($markdown->text('method:'.$route['method']))
                 ->write($markdown->text('中间件：'.$route['middleware']))
                 ->write($markdown->tableHeader([
                     '参数', '类型', '默认值', '备注',
@@ -118,7 +116,6 @@ class RouteCommand extends RouteListCommand
 
             $writer->close();
         }
-
     }
 
     protected function getOptions()
