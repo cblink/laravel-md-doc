@@ -51,8 +51,8 @@ class RouteCommand extends RouteListCommand
                 ->write($markdown->tableHeader([
                     '参数', '类型', '默认值', '备注',
                 ]))->write($markdown->tableRow([
-                    'param', 'type', '', '-',
-                ]).PHP_EOL.PHP_EOL);
+                        'param', 'type', '', '-',
+                    ]).PHP_EOL.PHP_EOL);
         }
 
         $writer->close();
@@ -87,7 +87,14 @@ class RouteCommand extends RouteListCommand
                 mkdir($path, 0777, true);
             }
 
-            $writer->open($path.DIRECTORY_SEPARATOR.$this->option('filename'));
+            $file = $path.DIRECTORY_SEPARATOR.$this->option('filename');
+
+            if (file_exists($file)) {
+                $writer->open($file);
+            } else {
+                $writer->open($file);
+                $writer->write($markdown->h2(ucfirst(substr($path, strrpos($path, '/') + 1))));
+            }
 
             $url = ($route['host'] ?: config('app.url').'/').$route['uri'];
 
@@ -99,8 +106,7 @@ class RouteCommand extends RouteListCommand
 
             $home->write($markdown->list($markdown->link($link, $link.'#')));
 
-            $writer->write($markdown->h2(ucfirst(substr($path, strrpos($path, '/') + 1))))
-                ->write($markdown->h3('待补充'))
+            $writer->write($markdown->h3('待补充'))
                 ->write($markdown->text($url))
                 ->write($markdown->text('method:'.$route['method']))
                 ->write($markdown->text('中间件：'.$route['middleware']))
