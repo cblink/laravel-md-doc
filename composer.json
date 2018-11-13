@@ -1,0 +1,24 @@
+{
+    "name": "cblink/laravel-md-doc",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hanson",
+            "email": "h@hanc.cc"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cblink\\MarkdownDoc\\": "src/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "laravel/framework": "^5.7"
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["Cblink\\MarkdownDoc\\MarkdownDocServiceProvider"]
+        }
+    }
+}
